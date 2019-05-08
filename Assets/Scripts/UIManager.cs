@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System;
 using UnityEngine.Networking;
+using LitJson;
 
 public class UIManager : MonoBehaviour
 {
@@ -29,6 +30,9 @@ public class UIManager : MonoBehaviour
     public InputField experiance;
 
     public GameObject howtoPlay;
+
+    public Text leaderBoardName;
+    public Text leaderBoardPoints;
 
 
     void Start()
@@ -89,7 +93,38 @@ public class UIManager : MonoBehaviour
     {
         leaderboard.SetActive(true);
         landingPanel.SetActive(false);
+
+        StartCoroutine(LoadLeaderboard());
     }
+
+    IEnumerator LoadLeaderboard()
+    {
+        const string LOGIN_URL = "http://gamerdata.gear.host/api/Score";
+        WWW www;
+        www = new WWW(LOGIN_URL);
+
+        yield return www;
+        if (www.error != null)
+        {
+            // alertText.text = "Check Your User Name Password";
+        }
+        else
+        {
+            Debug.Log("request success");
+            var userData = JsonMapper.ToObject<List<LeaderboardObject>>(www.text);
+
+
+            foreach (var score in userData)
+            {
+                leaderBoardName.text =score.PlayerName;
+                leaderBoardPoints.text =score.Points.ToString();
+            }
+         
+        }
+
+
+    }
+
     public void DeactiveLeaderBord()
     {
         leaderboard.SetActive(false);
@@ -127,23 +162,27 @@ public class UIManager : MonoBehaviour
         Hashtable postHeader = new Hashtable();
         postHeader.Add("Content-Type", "application/json");
 
-        //var newPlayer = new PlayerObject();
-        //newPlayer.Name = userName.text;
-        //newPlayer.Email = userEmail.text;
-        //newPlayer.GamerTag = userNikName.text;
-        //newPlayer.Password = passord.text;
-        //newPlayer.Age = age.text;
-        //newPlayer.Gender = gender.text;
+        var newPlayer = new PlayerObject();
+        newPlayer.Name = userName.text;
+        newPlayer.Email = userEmail.text;
+        newPlayer.GamerTag = userNikName.text;
+        newPlayer.Password = passord.text;
+        newPlayer.Age = age.text;
+        newPlayer.Gender = gender.text;
 
         // var jsonData = JsonUtility.ToJson(newPlayer);
-        var formData = System.Text.Encoding.UTF8.GetBytes("{'Name':'" + userName.text
-            + "', 'Email':'" + userEmail.text
-            + "', 'GamerTag':'" + userNikName.text
-            + "', 'Age':'" + age.text
-            + "', 'Gender':'" + gender.text
-            + "', 'Password':'" + passord.text + "'}");
+        // JsonMapper.ToObject<>
 
-        www = new WWW(POST_DATA_URL, formData, postHeader);
+        var jsonData = JsonMapper.ToJson(newPlayer);
+
+        //var formData = System.Text.Encoding.UTF8.GetBytes("{'Name':'" + userName.text
+        //    + "', 'Email':'" + userEmail.text
+        //    + "', 'GamerTag':'" + userNikName.text
+        //    + "', 'Age':'" + age.text
+        //    + "', 'Gender':'" + gender.text
+        //    + "', 'Password':'" + passord.text + "'}");
+
+        www = new WWW(POST_DATA_URL, System.Text.Encoding.UTF8.GetBytes(jsonData), postHeader);
 
         yield return www;
         if (www.error != null)
@@ -212,7 +251,11 @@ public class PlayerObject
     public bool IsActive { get; set; }
 }
 
-public class PlayerRoot
+
+public class LeaderboardObject
 {
-    public PlayerObject PlayerObject { get; set; }
+    public int Id { get; set; }
+    public string PlayerName { get; set; }
+    public int PlayerId { get; set; }
+    public int Points { get; set; }
 }

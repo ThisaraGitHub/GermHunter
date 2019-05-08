@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LitJson;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -50,10 +51,17 @@ public class Login : MonoBehaviour
         WWW www;
         Hashtable postHeader = new Hashtable();
         postHeader.Add("Content-Type", "application/json");
-        var formData = System.Text.Encoding.UTF8.GetBytes("{'Username':'" + userName.text
-            + "', 'Password':'" + userPassword.text + "'}");
 
-        www = new WWW(LOGIN_URL, formData, postHeader);
+        LoginObject postData = new LoginObject();
+        postData.Username = userName.text;
+        postData.Password = userPassword.text;
+
+        var jsonData = JsonMapper.ToJson(postData);
+
+        //var formData = System.Text.Encoding.UTF8.GetBytes("{'Username':'" + userName.text
+        //    + "', 'Password':'" + userPassword.text + "'}");
+
+        www = new WWW(LOGIN_URL, System.Text.Encoding.UTF8.GetBytes(jsonData), postHeader);
 
         yield return www;
         if (www.error != null)
@@ -68,7 +76,9 @@ public class Login : MonoBehaviour
             //loginPannel.enabled = false;
             print(www.text);
 
-            loggedUsername = www.text;
+            var userData = JsonMapper.ToObject<PlayerObject>(www.text);
+
+            loggedUsername = userData.Name;
             StartCoroutine(Deactivatetext());
         }
     }
@@ -85,6 +95,6 @@ public class Login : MonoBehaviour
 [Serializable]
 public class LoginObject
 {
-    public string Name { get; set; }
+    public string Username { get; set; }
     public string Password { get; set; }
 }
