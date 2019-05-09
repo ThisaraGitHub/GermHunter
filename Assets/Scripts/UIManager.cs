@@ -9,7 +9,7 @@ using LitJson;
 
 public class UIManager : MonoBehaviour
 {
-
+    //edited
     public GameObject homePanel;
     public GameObject loginPanel;
     public GameObject registerPanel;
