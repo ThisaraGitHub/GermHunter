@@ -30,7 +30,6 @@ public class Login : MonoBehaviour
         }
         else
         {
-
             SubmitLogin();
         }
     }
@@ -64,7 +63,7 @@ public class Login : MonoBehaviour
         www = new WWW(LOGIN_URL, System.Text.Encoding.UTF8.GetBytes(jsonData), postHeader);
 
         yield return www;
-        if (www.error != null)
+        if (www.text.Equals("null"))
         {
             alertText.text = "Check Your User Name Password";
         }

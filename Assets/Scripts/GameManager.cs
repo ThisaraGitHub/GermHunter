@@ -83,8 +83,9 @@ public class GameManager : MonoBehaviour {
 
     public void OnPlayButton()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("GermHunter");
         print("clicked");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("GermHunter");
+    
     }
 
     public void OnDeath()

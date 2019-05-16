@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<languages>
+
+	<language>
+	<Name>English</Name>
+	<button1>Play</button1>
+	<button2>Exit</button2>
+	</language>
+	
+	<language>
+	<Name>Sinhala</Name>
+	<button1>සෙල්ලම් කරන්න</button1>
+	<button2>පිටවීම</button2>
+	</language>
+	
+</languages>

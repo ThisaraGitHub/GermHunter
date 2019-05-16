@@ -16,6 +16,9 @@ public class UIManager : MonoBehaviour
     public GameObject leaderboard;
     public GameObject landingPanel;
     public GameObject mainLandingPanel;
+    public GameObject howtoPlayPanel;
+    public GameObject aboutPanel;
+    public GameObject SettingsPanel;
     public Text loginSucessText;
     public Text invalidDataText;
     public Text email;
@@ -28,8 +31,6 @@ public class UIManager : MonoBehaviour
     public InputField age;
     public InputField gender;
     public InputField experiance;
-
-    public GameObject howtoPlay;
 
     public Text leaderBoardName;
     public Text leaderBoardPoints;
@@ -47,6 +48,9 @@ public class UIManager : MonoBehaviour
         loginPanel.SetActive(false);
         registerPanel.SetActive(false);
         leaderboard.SetActive(false);
+        howtoPlayPanel.SetActive(false);
+        aboutPanel.SetActive(false);
+        SettingsPanel.SetActive(false);
     }
 
 
@@ -82,12 +86,32 @@ public class UIManager : MonoBehaviour
     }
     public void ActivateHowtoPlay()
     {
-        howtoPlay.SetActive(true);
+        howtoPlayPanel.SetActive(true);
     }
 
     public void DeactivateHowtoPlay()
     {
-        howtoPlay.SetActive(false);
+        howtoPlayPanel.SetActive(false);
+    }
+
+    public void ActivateSettings()
+    {
+        SettingsPanel.SetActive(true);
+    }
+
+    public void DeactivateSettings()
+    {
+        SettingsPanel.SetActive(false);
+    }
+
+    public void ActivateAbout()
+    {
+        aboutPanel.SetActive(true);
+    }
+
+    public void DeactivateAbout()
+    {
+        aboutPanel.SetActive(false);
     }
     public void ActiveLeaderBord()
     {

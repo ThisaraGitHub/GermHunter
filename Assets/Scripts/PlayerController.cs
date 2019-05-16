@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour {
     private float speedIncreaseLastTick;
     private float speedIncreaseTime = 2.5f;
     private float speedIncreaseAmount = 0.1f;
+    private Vector3 moveDirection = Vector3.zero;
 
     // Use this for initialization
     void Start () {
@@ -75,7 +76,8 @@ public class PlayerController : MonoBehaviour {
         {
             verticalVelocity = -0.1f;
 
-
+            moveDirection = new Vector3(Input.acceleration.x * 30, 0.0f, 0.0f);
+            moveDirection = transform.TransformDirection(moveDirection);
             //if (Input.GetKeyDown(KeyCode.Space))
             if (MobileInput.Instance.SwipeUp)
             {
@@ -99,6 +101,9 @@ public class PlayerController : MonoBehaviour {
                     verticalVelocity = -jumpForce;
             }
         }
+        moveDirection.y -= gravity * Time.deltaTime;       //Apply gravity  
+        controller.Move(moveDirection * Time.deltaTime);
+
         moveVector.y = verticalVelocity;
         moveVector.z = speed;
 
